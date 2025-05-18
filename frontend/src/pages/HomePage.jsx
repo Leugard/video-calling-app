@@ -16,7 +16,7 @@ import {
 import FriendCard from "../components/FriendCard";
 import NoFriendsFound from "../components/NoFriendsFound";
 import { LANGUAGE_TO_FLAG } from "../constants";
-import { capitialize, getLanguageFlag } from "../lib/utils";
+import { capitialize } from "../lib/utils";
 
 const HomePage = () => {
   const queryClient = useQueryClient();
@@ -73,7 +73,7 @@ const HomePage = () => {
         ) : friends.length === 0 ? (
           <NoFriendsFound />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {friends.map((friend) => (
               <FriendCard key={friend._id} friend={friend} />
             ))}
@@ -184,3 +184,22 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+function getLanguageFlag(language) {
+  if (!language) return null;
+
+  const langLower = language.toLowerCase();
+  const countryCode = LANGUAGE_TO_FLAG[langLower];
+
+  if (countryCode) {
+    return (
+      <img
+        src={`https://flagcdn.com/24x18/${countryCode}.png`}
+        alt={`${langLower} flag`}
+        className="h-3 mr-1 inline-block"
+      />
+    );
+  }
+
+  return null;
+}
